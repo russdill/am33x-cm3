@@ -38,7 +38,8 @@
 #define MEM_BANK_ON_ST_RET	0x1
 #define MEM_BANK_ON_ST_OFF	0x0
 
-#define WAKE_ALL		0x1fff
+#define WAKE_ALL		0x17ff	/* all except MPU_WAKE in DS modes */
+#define MPU_WAKE		0x800
 
 #define RTC_TIMEOUT_DEFAULT	0x2
 #define RTC_TIMEOUT_MAX		0xf
