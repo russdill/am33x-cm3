@@ -15,6 +15,7 @@
 #include <cm3.h>
 #include <device_am335x.h>
 #include <low_power.h>
+#include <prcm.h>
 #include <prmam335x.h>
 #include <system_am335.h>
 
@@ -92,6 +93,8 @@ void a8_lp_cmd3_handler(struct cmd_data *data, char use_default_val)
 	int per_st = 0;
 	int mpu_st = 0;
 	int temp;
+
+	ds_save();
 
 	configure_wake_sources(local_cmd->wake_sources, use_default_val);
 
@@ -176,6 +179,8 @@ void a8_lp_cmd5_handler(struct cmd_data *data, char use_default_val)
 	int per_st = 0;
 	int mpu_st = 0;
 
+	ds_save();
+
 	/* Disable MOSC if possible */
 	if (use_default_val || !(local_cmd->mosc_state))
 		disable_master_oscillator();
@@ -239,6 +244,8 @@ void a8_lp_cmd7_handler(struct cmd_data *data, char use_default_val)
 	int per_st = 0;
 	int mpu_st = 0;
 
+	ds_save();
+
 	/* Disable MOSC if possible */
 	if (use_default_val || !(local_cmd->mosc_state))
 		disable_master_oscillator();
@@ -289,6 +296,8 @@ void a8_standby_handler(struct cmd_data *data, char use_default_val)
 		(struct deep_sleep_data *)data->data;
 	int mpu_st = 0;
 	int per_st = 0;
+
+	ds_save();
 
 	configure_wake_sources(local_cmd->wake_sources, use_default_val);
 
@@ -371,6 +380,8 @@ void generic_wake_handler(int wakeup_reason)
 	}
 
 	enable_master_oscillator();
+
+	ds_restore();
 
 	/* If everything is done, we init things again */
 	/* Flush out NVIC interrupts */

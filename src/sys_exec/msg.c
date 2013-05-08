@@ -143,6 +143,12 @@ void msg_cmd_dispatcher()
 
 	cmd_global_data.cmd_id = cmd_id;
 
+	/* board specific data saved in global variables for now */
+	mem_type = (a8_m3_data_r.reg5 & MEM_TYPE_MASK) >> MEM_TYPE_SHIFT;
+	vtt_toggle = (a8_m3_data_r.reg5 & VTT_STAT_MASK) >> VTT_STAT_SHIFT;
+	vtt_gpio_pin = (a8_m3_data_r.reg5 & VTT_GPIO_PIN_MASK) >>
+				VTT_GPIO_PIN_SHIFT;
+
 	switch(cmd_id) {
 	case 0x1:
 		cmd_global_data.data = lp_data(use_default_val, &rtc_mode_data, &a8_m3_ds_data);
