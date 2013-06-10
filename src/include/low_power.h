@@ -15,7 +15,7 @@
 
 #include <stdint.h>
 
-#define CM3_VERSION		0x23
+#define CM3_VERSION		0x24
 
 #define MOSC_OFF		0x0
 #define MOSC_ON			0x1
@@ -74,6 +74,38 @@ struct deep_sleep_data {
 						   WDT1, ADTSC, RTC_TIMER, USBWOUT0, \
 						   MPU, USBWOUT1 */
 	int reserved :1;			/* Internal use */
+};
+
+struct pd_mpu_bits {
+	int	ram_retst_mask;
+	int	ram_retst_shift;
+	int	l2_retst_mask;
+	int	l2_retst_shift;
+	int	l1_retst_mask;
+	int	l1_retst_shift;
+	int	lpstchg_mask;
+	int	lpstchg_shift;
+	int	logicretst_mask;
+	int	logicretst_shift;
+	int	pwrst_mask;
+	int	pwrst_shift;
+};
+
+struct pd_per_bits {
+	int	per_retst_mask;
+	int	per_retst_shift;
+	int	ram1_retst_mask;
+	int	ram1_retst_shift;
+	int	ram2_retst_mask;
+	int	ram2_retst_shift;
+	int	icss_retst_mask;
+	int	icss_retst_shift;
+	int	lpstchg_mask;
+	int	lpstchg_shift;
+	int	logicretst_mask;
+	int	logicretst_shift;
+	int	pwrst_mask;
+	int	pwrst_shift;
 };
 
 int reg_mod(int, int, int);
