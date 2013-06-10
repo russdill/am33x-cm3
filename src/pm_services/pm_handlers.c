@@ -25,6 +25,8 @@ void a8_lp_cmd1_handler(struct cmd_data *data, char use_default_val)
 	struct rtc_data *local_cmd = (struct rtc_data *)data->data;
 	int timeout = 0;
 
+	a8_i2c_sleep_handler(data->i2c_sleep_offset);
+
 	/* If RTC module if not already configured... cannot continue */
 	rtc_enable_check();
 
@@ -61,6 +63,8 @@ void a8_lp_cmd2_handler(struct cmd_data *data, char use_default_val)
 	struct rtc_data *rtc_data = (struct rtc_data *)data->data;
 	int timeout = 0;
 
+	a8_i2c_sleep_handler(data->i2c_sleep_offset);
+
 	if (!rtc_data->rtc_timeout_val &&
 		(rtc_data->rtc_timeout_val < RTC_TIMEOUT_MAX))
 		timeout = rtc_data->rtc_timeout_val;
@@ -95,6 +99,8 @@ void a8_lp_cmd3_handler(struct cmd_data *data, char use_default_val)
 	int temp;
 
 	ds_save();
+
+	a8_i2c_sleep_handler(data->i2c_sleep_offset);
 
 	configure_wake_sources(local_cmd->wake_sources, use_default_val);
 
@@ -181,6 +187,8 @@ void a8_lp_cmd5_handler(struct cmd_data *data, char use_default_val)
 
 	ds_save();
 
+	a8_i2c_sleep_handler(data->i2c_sleep_offset);
+
 	/* Disable MOSC if possible */
 	if (use_default_val || !(local_cmd->mosc_state))
 		disable_master_oscillator();
@@ -246,6 +254,8 @@ void a8_lp_cmd7_handler(struct cmd_data *data, char use_default_val)
 
 	ds_save();
 
+	a8_i2c_sleep_handler(data->i2c_sleep_offset);
+
 	/* Disable MOSC if possible */
 	if (use_default_val || !(local_cmd->mosc_state))
 		disable_master_oscillator();
@@ -298,6 +308,8 @@ void a8_standby_handler(struct cmd_data *data, char use_default_val)
 	int per_st = 0;
 
 	ds_save();
+
+	a8_i2c_sleep_handler(data->i2c_sleep_offset);
 
 	configure_wake_sources(local_cmd->wake_sources, use_default_val);
 
@@ -400,6 +412,8 @@ void generic_wake_handler(int wakeup_reason)
 	trace_init();
 
 	pm_init();
+
+	a8_i2c_wake_handler(cmd_global_data.i2c_wake_offset);
 
 	/* Enable only the MBX IRQ */
 	nvic_enable_irq(AM335X_IRQ_MBINT0);
