@@ -27,9 +27,13 @@ void a8_notify(int cmd_stat_value)
 void a8_m3_low_power_sync(int cmd_stat_value)
 {
 	/* Disable this part for now */
-	a8_notify(cmd_stat_value);
+	if (cmd_id == 0xe)
+		a8_notify(cmd_stat_value);
+	else
+		msg_cmd_stat_update(cmd_stat_value);
 
 	/* Enable the PRCM interrupt for MPU gated state */
+	nvic_clear_irq(AM335X_IRQ_PRCM_M3_IRQ2);
 	nvic_enable_irq(AM335X_IRQ_PRCM_M3_IRQ2);
 }
 
