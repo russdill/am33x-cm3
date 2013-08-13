@@ -513,7 +513,7 @@ void a8_wake_cmd7_handler(void)
  * PD_PER = ON
  * PD_MPU = OFF
  */
-void a8_wake_cmdb_handler()
+void a8_wake_cmdb_handler(void)
 {
 	int result = 0;
 
