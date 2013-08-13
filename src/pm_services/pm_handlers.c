@@ -391,10 +391,6 @@ void generic_wake_handler(int wakeup_reason)
 		;
 	}
 
-	enable_master_oscillator();
-
-	ds_restore();
-
 	/* If everything is done, we init things again */
 	/* Flush out NVIC interrupts */
 	for (i=0; i<AM335X_NUM_EXT_INTERRUPTS; i++) {
@@ -464,6 +460,10 @@ void a8_wake_cmd3_handler(void)
 	clear_wake_sources();
 
 	mpu_clkdm_wake();
+
+	enable_master_oscillator();
+
+	ds_restore();
 }
 
 /*
@@ -491,6 +491,10 @@ void a8_wake_cmd5_handler(void)
 	clear_wake_sources();
 
 	mpu_clkdm_wake();
+
+	enable_master_oscillator();
+
+	ds_restore();
 }
 
 /*
@@ -517,6 +521,10 @@ void a8_wake_cmd7_handler(void)
 	__asm("sev");
 
 	clear_wake_sources();
+
+	enable_master_oscillator();
+
+	ds_restore();
 }
 
 /* Exit Standby mode
@@ -539,4 +547,8 @@ void a8_wake_cmdb_handler()
 	clear_wake_sources();
 
 	mpu_clkdm_wake();
+
+	enable_master_oscillator();
+
+	ds_restore();
 }
