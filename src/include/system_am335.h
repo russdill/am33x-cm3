@@ -100,6 +100,7 @@ void a8_lp_cmd5_handler(struct cmd_data *, char);
 void a8_lp_cmd7_handler(struct cmd_data *, char);
 void a8_standalone_handler(struct cmd_data *);
 void a8_standby_handler(struct cmd_data *, char);
+void a8_lp_idle_handler(struct cmd_data *, char);
 
 void generic_wake_handler(int);
 void a8_wake_cmd1_handler(void);
@@ -108,6 +109,7 @@ void a8_wake_cmd3_handler(void);
 void a8_wake_cmd5_handler(void);
 void a8_wake_cmd7_handler(void);
 void a8_wake_cmdb_handler(void);
+void a8_wake_idle_handler(void);
 
 void m3_firmware_version(void);
 void init_m3_state_machine(void);

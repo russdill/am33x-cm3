@@ -17,6 +17,7 @@
 #include <system_am335.h>
 
 extern struct rtc_data rtc_mode_data;
+extern struct deep_sleep_data idle_data;
 extern struct deep_sleep_data standby_data;
 extern struct deep_sleep_data ds0_data;
 extern struct deep_sleep_data ds1_data;
@@ -30,6 +31,7 @@ short valid_cmd_id[] = {
 	0x7,	/* DS2 */
 	0x9,	/* Standalone app */
 	0xb,	/* Standby */
+	0xc,	/* Idle */
 	0xe,	/* Reset State Machine */
 	0xf,	/* Version */
 };
@@ -179,6 +181,10 @@ void msg_cmd_dispatcher(void)
 	case 0xb:
 		cmd_global_data.data = lp_data(use_default_val, &standby_data, &a8_m3_ds_data);
 		a8_standby_handler(&cmd_global_data, use_default_val);	/* Standby */
+		break;
+	case 0xc:
+		cmd_global_data.data = lp_data(use_default_val, &idle_data, &a8_m3_ds_data);
+		a8_lp_idle_handler(&cmd_global_data, use_default_val);	/* idle */
 		break;
 	case 0xe:
 		init_m3_state_machine();	/* Reset M3 state machine */

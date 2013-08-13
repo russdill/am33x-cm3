@@ -352,6 +352,45 @@ void a8_standby_handler(struct cmd_data *data, char use_default_val)
 	mpu_clkdm_sleep();
 }
 
+void a8_lp_idle_handler(struct cmd_data *data, char use_default_val)
+{
+	struct deep_sleep_data *local_cmd =
+		(struct deep_sleep_data *)data->data;
+	int mpu_st = 0;
+	int per_st = 0;
+
+	idle_save();
+
+	a8_i2c_sleep_handler(data->i2c_sleep_offset);
+
+	configure_wake_sources(local_cmd->wake_sources, use_default_val);
+
+	per_st = get_pd_per_stctrl_val(4);
+	mpu_st = get_pd_mpu_stctrl_val(4);
+
+	if (!use_default_val) {
+		mpu_st = mpu_powerst_change
+				(local_cmd->pd_mpu_state, mpu_st);
+		mpu_st = mpu_ram_ret_state_change
+				(local_cmd->pd_mpu_ram_ret_state, mpu_st);
+		mpu_st = mpu_l1_ret_state_change
+				(local_cmd->pd_mpu_l1_ret_state, mpu_st);
+		mpu_st = mpu_l2_ret_state_change
+				(local_cmd->pd_mpu_l2_ret_state, mpu_st);
+	}
+
+	/* MPU power domain state change */
+	pd_state_change(mpu_st, PD_MPU);
+
+	/* PER power domain state change */
+	pd_state_change(per_st, PD_PER);
+
+	if (local_cmd->pd_mpu_state != PD_ON)
+		module_state_change(MODULE_DISABLE, AM335X_CM_PER_IEEE5000_CLKCTRL);
+
+	mpu_clkdm_sleep();
+}
+
 /* Standalone application handler */
 void a8_standalone_handler(struct cmd_data *data)
 {
@@ -384,6 +423,9 @@ void generic_wake_handler(int wakeup_reason)
 		break;
 	case 0xb:
 		a8_wake_cmdb_handler();	/* Standby */
+		break;
+	case 0xc:
+		a8_wake_idle_handler();	/* Idle */
 		break;
 	case 0xff:
 	default:
@@ -551,4 +593,30 @@ void a8_wake_cmdb_handler()
 	enable_master_oscillator();
 
 	ds_restore();
+}
+
+/* Exit Idle mode
+ * MOSC = ON
+ * PD_PER = ON
+ * PD_MPU = OFF
+ */
+void a8_wake_idle_handler()
+{
+	int result = 0;
+
+	result = verify_pd_transitions();
+
+	pd_state_restore();
+
+	clkdm_wake();
+
+	essential_modules_enable();
+
+	msg_cmd_stat_update(result);
+
+	clear_wake_sources();
+
+	mpu_clkdm_wake();
+
+	idle_restore();
 }

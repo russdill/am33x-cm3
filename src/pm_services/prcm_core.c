@@ -116,6 +116,29 @@ struct deep_sleep_data standby_data =  {
 	.reserved			= 0
 };
 
+struct deep_sleep_data idle_data =  {
+	.mosc_state			= MOSC_ON,
+	.deepsleep_count		= 0,
+	.vdd_mpu_val			= 0,
+
+	.pd_mpu_state			= PD_OFF,
+	.pd_mpu_ram_ret_state		= MEM_BANK_RET_ST_OFF,
+	.pd_mpu_l1_ret_state		= MEM_BANK_RET_ST_OFF,
+	.pd_mpu_l2_ret_state		= MEM_BANK_RET_ST_OFF,
+	.pd_mpu_ram_on_state		= 0,
+
+	.pd_per_state			= PD_ON,
+	.pd_per_icss_mem_ret_state	= 0,
+	.pd_per_mem_ret_state		= 0,
+	.pd_per_ocmc_ret_state		= 0,
+	.pd_per_icss_mem_on_state 	= MEM_BANK_ON_ST_ON,
+	.pd_per_mem_on_state 		= MEM_BANK_ON_ST_ON,
+	.pd_per_ocmc_on_state 		= MEM_BANK_ON_ST_ON,
+
+	.wake_sources			= MPU_WAKE,
+	.reserved			= 0
+};
+
 /* Clear out the global variables here */
 void pm_init(void)
 {
@@ -458,6 +481,9 @@ static int _next_pd_per_stctrl_val(int state)
 	case 3:
 		data = &standby_data;
 		break;
+	case 4:
+		data = &idle_data;
+		break;
 	default:
 		return 0;
 	}
@@ -495,6 +521,9 @@ static int _next_pd_mpu_stctrl_val(int state)
 		break;
 	case 3:
 		data = &standby_data;
+		break;
+	case 4:
+		data = &idle_data;
 		break;
 	default:
 		return 0;
@@ -1091,6 +1120,20 @@ void ds_restore(void)
 
 	clear_ddr_reset();
 }
+
+void idle_save(void)
+{
+	pll_bypass(DPLL_MPU);
+}
+
+void idle_restore(void)
+{
+	pll_lock(DPLL_MPU);
+
+	/* XXX: Why is this required here for DDR3? */
+	module_state_change(MODULE_ENABLE, AM335X_CM_PER_EMIF_CLKCTRL);
+}
+
 
 int a8_i2c_sleep_handler(unsigned short i2c_sleep_offset)
 {
