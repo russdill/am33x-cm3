@@ -339,7 +339,7 @@ void a8_standby_handler(struct cmd_data *data, char use_default_val)
 }
 
 /* Standalone application handler */
-void a8_standalone_handler(struct cmd_data *data)
+void a8_standalone_handler(struct cmd_data *data, char use_default_val)
 {
 	/* TBD */
 }

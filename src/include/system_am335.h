@@ -108,7 +108,7 @@ void a8_lp_cmd2_handler(struct cmd_data *, char);
 void a8_lp_cmd3_handler(struct cmd_data *, char);
 void a8_lp_cmd5_handler(struct cmd_data *, char);
 void a8_lp_cmd7_handler(struct cmd_data *, char);
-void a8_standalone_handler(struct cmd_data *);
+void a8_standalone_handler(struct cmd_data *, char);
 void a8_standby_handler(struct cmd_data *, char);
 
 void generic_wake_handler(int);
