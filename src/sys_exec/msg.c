@@ -43,55 +43,46 @@ static void reset_handler(struct cmd_data *data)
 }
 
 struct state_handler cmd_handlers[] = {
-	/* RTC */
-	[0x1] = {
+	[CMD_ID_RTC] = {
 		.gp_data = &rtc_mode_data,
-		.handler = a8_lp_cmd1_handler,
+		.handler = a8_lp_rtc_handler,
 		.needs_trigger = 1,
 	},
-	/* RTC_FAST */
-	[0x2] = {
+	[CMD_ID_RTC_FAST] = {
 		.gp_data = &rtc_mode_data,
-		.handler = a8_lp_cmd2_handler,
+		.handler = a8_lp_rtc_fast_handler,
 		.needs_trigger = 1,
 	},
-	/* DS0 */
-	[0x3] = {
+	[CMD_ID_DS0] = {
 		.gp_data = &ds0_data,
 		.hs_data = &ds0_data_hs,
-		.handler = a8_lp_cmd3_handler,
+		.handler = a8_lp_ds0_handler,
 		.needs_trigger = 1,
 	},
-	/* DS1 */
-	[0x5] = {
+	[CMD_ID_DS1] = {
 		.gp_data = &ds1_data,
 		.hs_data = &ds1_data_hs,
-		.handler = a8_lp_cmd5_handler,
+		.handler = a8_lp_ds1_handler,
 		.needs_trigger = 1,
 	},
-	/* DS2 */
-	[0x7] = {
+	[CMD_ID_DS2] = {
 		.gp_data = &ds2_data,
-		.handler = a8_lp_cmd7_handler,
+		.handler = a8_lp_ds2_handler,
 		.needs_trigger = 1,
 	},
-	/* Standalone app */
-	[0x9] = {
+	[CMD_ID_STANDALONE] = {
 		.handler = a8_standalone_handler,
 		.needs_trigger = 1,
 	},
-	/* Standby */
-	[0xb] = {
+	[CMD_ID_STANDBY] = {
 		.gp_data = &standby_data,
 		.handler = a8_standby_handler,
 		.needs_trigger = 1,
 	},
-	/* Reset State Machine */
-	[0xe] = {
+	[CMD_ID_RESET] = {
 		.handler = reset_handler,
 	},
-	/* Version */
-	[0xf] = {
+	[CMD_ID_VERSION] = {
 		.handler = version_handler,
 	},
 };
@@ -178,9 +169,9 @@ int msg_cmd_is_valid(void)
 	msg_read(STAT_ID_REG);
 
 	/* Extract the CMD_ID field of 16 bits */
-	cmd_id = ipc_reg_r & 0xffff;
+	cmd_id = (enum cmd_ids) ipc_reg_r & 0xffff;
 
-	if (cmd_id >= ARRAY_SIZE(cmd_handlers) || cmd_id < 0)
+	if (cmd_id >= CMD_ID_COUNT || cmd_id <= CMD_ID_INVALID)
 		return 0;
 
 	return cmd_handlers[cmd_id].handler != NULL;

@@ -31,8 +31,22 @@ struct ds_data {
 	int reg2;
 };
 
+enum cmd_ids {
+	CMD_ID_INVALID		= 0x0,
+	CMD_ID_RTC		= 0x1,
+	CMD_ID_RTC_FAST		= 0x2,
+	CMD_ID_DS0		= 0x3,
+	CMD_ID_DS1		= 0x5,
+	CMD_ID_DS2		= 0x7,
+	CMD_ID_STANDALONE	= 0x9,
+	CMD_ID_STANDBY		= 0xb,
+	CMD_ID_RESET		= 0xe,
+	CMD_ID_VERSION		= 0xf,
+	CMD_ID_COUNT,
+};
+
 struct cmd_data {
-	short cmd_id;
+	enum cmd_ids cmd_id;
 	void *data;
 	unsigned short i2c_sleep_offset;
 	unsigned short i2c_wake_offset;
@@ -46,7 +60,7 @@ struct ds_data	a8_m3_ds_data;
 int ipc_reg_r;
 int ipc_reg_w;
 
-short cmd_id;
+enum cmd_ids cmd_id;
 short cmd_stat;
 
 /* Board specifics populated in IPC_REG4 */
@@ -101,21 +115,21 @@ void msg_cmd_wakeup_reason_update(int);
 void a8_notify(int);
 void a8_m3_low_power_sync(int);
 
-void a8_lp_cmd1_handler(struct cmd_data *);
-void a8_lp_cmd2_handler(struct cmd_data *);
-void a8_lp_cmd3_handler(struct cmd_data *);
-void a8_lp_cmd5_handler(struct cmd_data *);
-void a8_lp_cmd7_handler(struct cmd_data *);
+void a8_lp_rtc_handler(struct cmd_data *);
+void a8_lp_rtc_fast_handler(struct cmd_data *);
+void a8_lp_ds0_handler(struct cmd_data *);
+void a8_lp_ds1_handler(struct cmd_data *);
+void a8_lp_ds2_handler(struct cmd_data *);
 void a8_standalone_handler(struct cmd_data *);
 void a8_standby_handler(struct cmd_data *);
 
 void generic_wake_handler(int);
-void a8_wake_cmd1_handler(void);
-void a8_wake_cmd2_handler(void);
-void a8_wake_cmd3_handler(void);
-void a8_wake_cmd5_handler(void);
-void a8_wake_cmd7_handler(void);
-void a8_wake_cmdb_handler(void);
+void a8_wake_rtc_handler(void);
+void a8_wake_rtc_fast_handler(void);
+void a8_wake_ds0_handler(void);
+void a8_wake_ds1_handler(void);
+void a8_wake_ds2_handler(void);
+void a8_wake_standby_handler(void);
 
 void m3_firmware_version(void);
 void init_m3_state_machine(void);
