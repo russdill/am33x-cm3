@@ -57,7 +57,6 @@ struct ipc_data a8_m3_data_r;
 struct ds_data	a8_m3_ds_data;
 
 int ipc_reg_r;
-int ipc_reg_w;
 
 enum cmd_ids cmd_id;
 short cmd_stat;
@@ -102,7 +101,7 @@ void system_core_clock_update(void);
 void msg_init(void);
 void msg_read(char);
 void msg_read_all(void);
-void msg_write(char);
+void msg_write(unsigned int, char);
 
 int msg_cmd_is_valid(void);
 int msg_cmd_needs_trigger(void);
