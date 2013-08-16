@@ -54,7 +54,6 @@ struct cmd_data {
 
 struct cmd_data cmd_global_data;
 struct ipc_data a8_m3_data_r;
-struct ipc_data	a8_m3_data_w;
 struct ds_data	a8_m3_ds_data;
 
 int ipc_reg_r;
