@@ -20,7 +20,7 @@
 #include <system_am335.h>
 
 /* Enter RTC mode */
-void a8_lp_cmd1_handler(struct cmd_data *data, char use_default_val)
+void a8_lp_cmd1_handler(struct cmd_data *data)
 {
 	struct rtc_data *local_cmd = (struct rtc_data *)data->data;
 	int timeout = 0;
@@ -58,7 +58,7 @@ void a8_lp_cmd1_handler(struct cmd_data *data, char use_default_val)
 }
 
 /* Enter RTC_fast mode */
-void a8_lp_cmd2_handler(struct cmd_data *data, char use_default_val)
+void a8_lp_cmd2_handler(struct cmd_data *data)
 {
 	struct rtc_data *rtc_data = (struct rtc_data *)data->data;
 	int timeout = 0;
@@ -90,7 +90,7 @@ void a8_lp_cmd2_handler(struct cmd_data *data, char use_default_val)
  * PD_PER = RET
  * PD_MPU = RET
  */
-void a8_lp_cmd3_handler(struct cmd_data *data, char use_default_val)
+void a8_lp_cmd3_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd = (struct deep_sleep_data *)data->data;
 
@@ -159,7 +159,7 @@ void a8_lp_cmd3_handler(struct cmd_data *data, char use_default_val)
  * PD_PER = ON
  * PD_MPU = RET
  */
-void a8_lp_cmd5_handler(struct cmd_data *data, char use_default_val)
+void a8_lp_cmd5_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd = (struct deep_sleep_data *)data->data;
 
@@ -207,7 +207,7 @@ void a8_lp_cmd5_handler(struct cmd_data *data, char use_default_val)
  * PD_PER = ON
  * PD_MPU = ON
  */
-void a8_lp_cmd7_handler(struct cmd_data *data, char use_default_val)
+void a8_lp_cmd7_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd = (struct deep_sleep_data *)data->data;
 
@@ -247,7 +247,7 @@ void a8_lp_cmd7_handler(struct cmd_data *data, char use_default_val)
 	/*TODO: wait for power domain state change interrupt from PRCM */
 }
 
-void a8_standby_handler(struct cmd_data *data, char use_default_val)
+void a8_standby_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd =
 		(struct deep_sleep_data *)data->data;
@@ -274,7 +274,7 @@ void a8_standby_handler(struct cmd_data *data, char use_default_val)
 }
 
 /* Standalone application handler */
-void a8_standalone_handler(struct cmd_data *data, char use_default_val)
+void a8_standalone_handler(struct cmd_data *data)
 {
 	/* TBD */
 }

@@ -101,13 +101,13 @@ void msg_cmd_wakeup_reason_update(int);
 void a8_notify(int);
 void a8_m3_low_power_sync(int);
 
-void a8_lp_cmd1_handler(struct cmd_data *, char);
-void a8_lp_cmd2_handler(struct cmd_data *, char);
-void a8_lp_cmd3_handler(struct cmd_data *, char);
-void a8_lp_cmd5_handler(struct cmd_data *, char);
-void a8_lp_cmd7_handler(struct cmd_data *, char);
-void a8_standalone_handler(struct cmd_data *, char);
-void a8_standby_handler(struct cmd_data *, char);
+void a8_lp_cmd1_handler(struct cmd_data *);
+void a8_lp_cmd2_handler(struct cmd_data *);
+void a8_lp_cmd3_handler(struct cmd_data *);
+void a8_lp_cmd5_handler(struct cmd_data *);
+void a8_lp_cmd7_handler(struct cmd_data *);
+void a8_standalone_handler(struct cmd_data *);
+void a8_standby_handler(struct cmd_data *);
 
 void generic_wake_handler(int);
 void a8_wake_cmd1_handler(void);
