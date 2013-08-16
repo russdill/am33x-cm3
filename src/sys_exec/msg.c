@@ -119,6 +119,7 @@ void msg_init(void)
 	a8_m3_data_w.reg7 = 0;
 	a8_m3_data_w.reg8 = 0;
 
+	/* DIE.... */
 	ipc_reg_r = 0;
 	ipc_reg_w = 0;
 }
