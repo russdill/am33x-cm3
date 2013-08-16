@@ -309,7 +309,6 @@ void a8_standby_handler(struct cmd_data *data, char use_default_val)
 	struct deep_sleep_data *local_cmd =
 		(struct deep_sleep_data *)data->data;
 	int mpu_st = 0;
-	int per_st = 0;
 
 	ds_save();
 
