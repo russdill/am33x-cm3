@@ -56,8 +56,6 @@ struct cmd_data cmd_global_data;
 struct ipc_data a8_m3_data_r;
 struct ds_data	a8_m3_ds_data;
 
-int ipc_reg_r;
-
 enum cmd_ids cmd_id;
 short cmd_stat;
 
@@ -99,7 +97,7 @@ void system_init(void);
 void system_core_clock_update(void);
 
 void msg_init(void);
-void msg_read(char);
+unsigned int msg_read(char);
 void msg_read_all(void);
 void msg_write(unsigned int, char);
 
