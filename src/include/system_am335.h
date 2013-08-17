@@ -40,6 +40,16 @@ struct cmd_data {
 
 struct cmd_data cmd_global_data;
 
+struct state_handler {
+	union state_data *gp_data;
+	union state_data *hs_data;
+	void (*cmd_handler)(struct cmd_data *data);
+	void (*wake_handler)(void);
+	bool needs_trigger;
+};
+
+extern struct state_handler cmd_handlers[];
+
 /* Board specifics populated in IPC_REG4 */
 int mem_type;			/* Memory Type 2 = DDR2, 3 = DDR3 */
 bool vtt_toggle; 		/* VTT Toggle  true = required */

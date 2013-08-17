@@ -27,13 +27,6 @@ extern union state_data ds2_data;
 
 static union state_data custom_state_data;
 
-struct state_handler {
-	union state_data *gp_data;
-	union state_data *hs_data;
-	void (*handler)(struct cmd_data *data);
-	bool needs_trigger;
-};
-
 static void version_handler(struct cmd_data *data)
 {
 	m3_firmware_version();
@@ -47,45 +40,51 @@ static void reset_handler(struct cmd_data *data)
 struct state_handler cmd_handlers[] = {
 	[CMD_ID_RTC] = {
 		.gp_data = &rtc_mode_data,
-		.handler = a8_lp_rtc_handler,
+		.cmd_handler = a8_lp_rtc_handler,
+		.wake_handler = a8_wake_rtc_handler,
 		.needs_trigger = true,
 	},
 	[CMD_ID_RTC_FAST] = {
 		.gp_data = &rtc_mode_data,
-		.handler = a8_lp_rtc_fast_handler,
+		.cmd_handler = a8_lp_rtc_fast_handler,
+		.wake_handler = a8_wake_rtc_fast_handler,
 		.needs_trigger = true,
 	},
 	[CMD_ID_DS0] = {
 		.gp_data = &ds0_data,
 		.hs_data = &ds0_data_hs,
-		.handler = a8_lp_ds0_handler,
+		.cmd_handler = a8_lp_ds0_handler,
+		.wake_handler = a8_wake_ds0_handler,
 		.needs_trigger = true,
 	},
 	[CMD_ID_DS1] = {
 		.gp_data = &ds1_data,
 		.hs_data = &ds1_data_hs,
-		.handler = a8_lp_ds1_handler,
+		.cmd_handler = a8_lp_ds1_handler,
+		.wake_handler = a8_wake_ds1_handler,
 		.needs_trigger = true,
 	},
 	[CMD_ID_DS2] = {
 		.gp_data = &ds2_data,
-		.handler = a8_lp_ds2_handler,
+		.cmd_handler = a8_lp_ds2_handler,
+		.wake_handler = a8_wake_ds2_handler,
 		.needs_trigger = true,
 	},
 	[CMD_ID_STANDALONE] = {
-		.handler = a8_standalone_handler,
+		.cmd_handler = a8_standalone_handler,
 		.needs_trigger = true,
 	},
 	[CMD_ID_STANDBY] = {
 		.gp_data = &standby_data,
-		.handler = a8_standby_handler,
+		.cmd_handler = a8_standby_handler,
+		.wake_handler = a8_wake_standby_handler,
 		.needs_trigger = true,
 	},
 	[CMD_ID_RESET] = {
-		.handler = reset_handler,
+		.cmd_handler = reset_handler,
 	},
 	[CMD_ID_VERSION] = {
-		.handler = version_handler,
+		.cmd_handler = version_handler,
 	},
 };
 
@@ -120,7 +119,7 @@ bool msg_cmd_is_valid(void)
 	    cmd_global_data.cmd_id <= CMD_ID_INVALID)
 		return false;
 
-	return cmd_handlers[cmd_global_data.cmd_id].handler != NULL;
+	return cmd_handlers[cmd_global_data.cmd_id].cmd_handler != NULL;
 }
 
 /* Read all the IPC regs and pass it along to the appropriate handler */
@@ -157,7 +156,7 @@ void msg_cmd_dispatcher(void)
 		cmd_global_data.data = &custom_state_data;
 	}
 
-	cmd_handlers[id].handler(&cmd_global_data);
+	cmd_handlers[id].cmd_handler(&cmd_global_data);
 }
 
 void m3_firmware_version(void)
