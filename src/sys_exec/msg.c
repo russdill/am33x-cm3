@@ -11,8 +11,8 @@
 */
 
 #include <stdint.h>
+#include <stddef.h>
 
-#include <firmware.h>
 #include <device_am335x.h>
 #include <low_power.h>
 #include <system_am335.h>

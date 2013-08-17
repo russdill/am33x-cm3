@@ -11,7 +11,7 @@
 */
 
 #include <stdint.h>
-#include <firmware.h>
+#include <stddef.h>
 
 extern unsigned int _end_stack;
 extern unsigned int _end_text;
