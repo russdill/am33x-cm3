@@ -56,8 +56,6 @@ struct cmd_data cmd_global_data;
 struct ipc_data a8_m3_data_r;
 struct ds_data	a8_m3_ds_data;
 
-short cmd_stat;
-
 /* Board specifics populated in IPC_REG4 */
 int mem_type;			/* Memory Type 2 = DDR2, 3 = DDR3 */
 int vtt_toggle; 		/* VTT Toggle  1 = required */
