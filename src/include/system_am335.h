@@ -101,7 +101,6 @@ void a8_notify(int);
 void a8_m3_low_power_sync(int);
 
 void a8_lp_rtc_handler(struct cmd_data *);
-void a8_lp_rtc_fast_handler(struct cmd_data *);
 void a8_lp_ds0_handler(struct cmd_data *);
 void a8_lp_ds1_handler(struct cmd_data *);
 void a8_lp_ds2_handler(struct cmd_data *);
@@ -110,7 +109,6 @@ void a8_standby_handler(struct cmd_data *);
 
 void generic_wake_handler(int);
 void a8_wake_rtc_handler(void);
-void a8_wake_rtc_fast_handler(void);
 void a8_wake_ds0_handler(void);
 void a8_wake_ds1_handler(void);
 void a8_wake_ds2_handler(void);
