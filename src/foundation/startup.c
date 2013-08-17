@@ -10,7 +10,8 @@
  *  software download.
 */
 
-#include  <stdint.h>
+#include <stdint.h>
+#include <firmware.h>
 
 extern unsigned int _end_stack;
 extern unsigned int _end_text;
@@ -97,13 +98,13 @@ void *vector_table[] __attribute__ ((section(".vectors"))) = {
 	memmanage_handler,
 	busfault_handler,
 	usagefault_handler,
-	0,
-	0,
-	0,
-	0,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	svc_handler,
 	debugmon_handler,
-	0,
+	NULL,
 	pendsv_handler,
 	systick_handler,
 
