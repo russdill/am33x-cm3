@@ -23,7 +23,7 @@
 void a8_lp_rtc_handler(struct cmd_data *data)
 {
 	struct rtc_data *local_cmd = &data->data->rtc;
-	int timeout = 0;
+	int timeout;
 
 	a8_i2c_sleep_handler(data->i2c_sleep_offset);
 
@@ -61,7 +61,7 @@ void a8_lp_rtc_handler(struct cmd_data *data)
 void a8_lp_rtc_fast_handler(struct cmd_data *data)
 {
 	struct rtc_data *rtc_data = &data->data->rtc;
-	int timeout = 0;
+	int timeout;
 
 	a8_i2c_sleep_handler(data->i2c_sleep_offset);
 
@@ -93,9 +93,8 @@ void a8_lp_rtc_fast_handler(struct cmd_data *data)
 void a8_lp_ds0_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd = &data->data->deep_sleep;
-
-	int per_st = 0;
-	int mpu_st = 0;
+	int per_st;
+	int mpu_st;
 	int temp;
 
 	ds_save();
@@ -162,9 +161,8 @@ void a8_lp_ds0_handler(struct cmd_data *data)
 void a8_lp_ds1_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd = &data->data->deep_sleep;
-
-	int per_st = 0;
-	int mpu_st = 0;
+	int per_st;
+	int mpu_st;
 
 	ds_save();
 
@@ -210,9 +208,8 @@ void a8_lp_ds1_handler(struct cmd_data *data)
 void a8_lp_ds2_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd = &data->data->deep_sleep;
-
-	int per_st = 0;
-	int mpu_st = 0;
+	int per_st;
+	int mpu_st;
 
 	ds_save();
 
@@ -250,7 +247,7 @@ void a8_lp_ds2_handler(struct cmd_data *data)
 void a8_standby_handler(struct cmd_data *data)
 {
 	struct deep_sleep_data *local_cmd = &data->data->deep_sleep;
-	int mpu_st = 0;
+	int mpu_st;
 
 	ds_save();
 
@@ -281,7 +278,7 @@ void a8_standalone_handler(struct cmd_data *data)
 /* All wake interrupts invoke this function */
 void generic_wake_handler(int wakeup_reason)
 {
-	int i = 0;
+	int i;
 
 	if (halt_on_resume)
 		while(1);
@@ -321,7 +318,7 @@ void generic_wake_handler(int wakeup_reason)
 
 	/* If everything is done, we init things again */
 	/* Flush out NVIC interrupts */
-	for (i=0; i<AM335X_NUM_EXT_INTERRUPTS; i++) {
+	for (i = 0; i < AM335X_NUM_EXT_INTERRUPTS; i++) {
 		nvic_disable_irq(i);
 		nvic_clear_irq(i);
 	}
@@ -360,7 +357,7 @@ void a8_wake_rtc_fast_handler(void)
  */
 void a8_wake_ds0_handler(void)
 {
-	int result = 0;
+	int result;
 
 	if (soc_id == AM335X_SOC_ID && soc_rev > AM335X_REV_ES1_0)
 		core_ldo_power_up();
@@ -395,7 +392,7 @@ void a8_wake_ds0_handler(void)
  */
 void a8_wake_ds1_handler(void)
 {
-	int result = 0;
+	int result;
 
 	result = verify_pd_transitions();
 
@@ -423,7 +420,7 @@ void a8_wake_ds1_handler(void)
  */
 void a8_wake_ds2_handler(void)
 {
-	int result = 0;
+	int result;
 
 	result = verify_pd_transitions();
 
@@ -449,7 +446,7 @@ void a8_wake_ds2_handler(void)
  */
 void a8_wake_standby_handler(void)
 {
-	int result = 0;
+	int result;
 
 	result = verify_pd_transitions();
 
