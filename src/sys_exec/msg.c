@@ -31,7 +31,7 @@ struct state_handler {
 	union state_data *gp_data;
 	union state_data *hs_data;
 	void (*handler)(struct cmd_data *data);
-	int needs_trigger;
+	bool needs_trigger;
 };
 
 static void version_handler(struct cmd_data *data)
@@ -48,38 +48,38 @@ struct state_handler cmd_handlers[] = {
 	[CMD_ID_RTC] = {
 		.gp_data = &rtc_mode_data,
 		.handler = a8_lp_rtc_handler,
-		.needs_trigger = 1,
+		.needs_trigger = true,
 	},
 	[CMD_ID_RTC_FAST] = {
 		.gp_data = &rtc_mode_data,
 		.handler = a8_lp_rtc_fast_handler,
-		.needs_trigger = 1,
+		.needs_trigger = true,
 	},
 	[CMD_ID_DS0] = {
 		.gp_data = &ds0_data,
 		.hs_data = &ds0_data_hs,
 		.handler = a8_lp_ds0_handler,
-		.needs_trigger = 1,
+		.needs_trigger = true,
 	},
 	[CMD_ID_DS1] = {
 		.gp_data = &ds1_data,
 		.hs_data = &ds1_data_hs,
 		.handler = a8_lp_ds1_handler,
-		.needs_trigger = 1,
+		.needs_trigger = true,
 	},
 	[CMD_ID_DS2] = {
 		.gp_data = &ds2_data,
 		.handler = a8_lp_ds2_handler,
-		.needs_trigger = 1,
+		.needs_trigger = true,
 	},
 	[CMD_ID_STANDALONE] = {
 		.handler = a8_standalone_handler,
-		.needs_trigger = 1,
+		.needs_trigger = true,
 	},
 	[CMD_ID_STANDBY] = {
 		.gp_data = &standby_data,
 		.handler = a8_standby_handler,
-		.needs_trigger = 1,
+		.needs_trigger = true,
 	},
 	[CMD_ID_RESET] = {
 		.handler = reset_handler,
@@ -112,13 +112,13 @@ void msg_cmd_read_id(void)
 
 /*
  * Check if the cmd_id is valid or not
- * return 1 on success, 0 on failure
+ * return true on success, false on failure
  */
-int msg_cmd_is_valid(void)
+bool msg_cmd_is_valid(void)
 {
 	if (cmd_global_data.cmd_id >= CMD_ID_COUNT ||
 	    cmd_global_data.cmd_id <= CMD_ID_INVALID)
-		return 0;
+		return false;
 
 	return cmd_handlers[cmd_global_data.cmd_id].handler != NULL;
 }
@@ -192,10 +192,10 @@ void msg_cmd_wakeup_reason_update(int wakeup_source)
 
 /*
  * Check whether command needs a trigger or not
- * returns 1 if trigger is needed
- * returns 0 if trigger is not needed (eg: checking the version)
+ * returns true if trigger is needed
+ * returns false if trigger is not needed (eg: checking the version)
  */
-int msg_cmd_needs_trigger(void)
+bool msg_cmd_needs_trigger(void)
 {
 	return cmd_handlers[cmd_global_data.cmd_id].needs_trigger;
 }
